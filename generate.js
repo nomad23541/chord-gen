@@ -1,37 +1,87 @@
 $(document).ready(function() {
-    const piano = Synth.createInstrument('piano')
-    
     // scales
-    const fMaj = ['F', 'G', 'A', 'A#', 'C', 'D', 'E']
-    const cMaj = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-    const gMaj = ['G', 'A', 'B', 'C', 'D', 'E', 'F#']
-    const dMaj = ['D', 'E', 'F#', 'G', 'A', 'B', 'C#']
-    const aMaj = ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#']
-    const eMaj = ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#']
-    const bMaj = ['B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#']
+    const cScale = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
+    const fScale = ['F', 'G', 'A', 'A#', 'C', 'D', 'E']
+    const gScale = ['G', 'A', 'B', 'C', 'D', 'E', 'F#']
+    const dScale = ['D', 'E', 'F#', 'G', 'A', 'B', 'C#']
+    const aScale = ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#']
+    const eScale = ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#']
+    const bScale = ['B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#']
 
-    const keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    const scales = [cScale, fScale, gScale, dScale, aScale, eScale, bScale]
+    let options = ''
+    for(let i = 0; i < scales.length; i++) {
+        options += '<option value="' + scales[i][0] + '">' + scales[i][0] + '</option>'
+    }
+    $('#selectScale').append(options)
 
-    
+    Synth.setVolume(0.40)
+    const piano = Synth.createInstrument('piano')
 
     $('#btnChordGen').click(function() {
-        // play random major chord in c major scale
-        // get first index
-        let results = generateRandomMajScale(bMaj)
-        piano.play(results[0], 4, 2)
-        piano.play(results[1], 4, 2)
-        piano.play(results[2], 4, 2)
-        console.log(results)
+        let selectedMood = $('#selectMood').find(':selected').text()
+        let selectedScale = $('#selectScale').find(':selected').text()
+
+        // find the selected scale
+        let scale
+        for(let i = 0; i < scales.length; i++) {
+            if(scales[i][0] === selectedScale) {
+                scale = scales[i]
+                break;
+            }
+        }
+
+        // clear chords wrapper everytime
+        $('#chordWrapper').empty()
+
+        // generate progression
+        let generatedChords = generateProgression(scale, selectedMood)
+        const chordTemplate = $('#chord-template').html().trim()
+        for(let i = 0; i < generatedChords.length; i++) {
+            let newChord = $(chordTemplate)
+            $(newChord).attr('keys', generatedChords[i])
+            $(newChord).find('.key').text(generatedChords[i][0])
+
+            if(selectedMood === 'Happy') {
+                $(newChord).find('.type').text('Maj')
+            } else if(selectedMood === 'Sad') {
+                $(newChord).find('.type').text('Min')
+            }
+
+            $('#chordWrapper').append(newChord)
+
+        }
+
+        // handle chord element clicking
+        $('.chord').click(function() {
+            let keys = $(this).attr('keys').split(',')
+            for(let i = 0; i < keys.length; i++) {
+                piano.play(keys[i], 4, 2)
+            }
+        })
     })
+
+    function generateProgression(scale, mood) {
+        let chords = []
+        for(let i = 0; i < 4; i++) {
+            if(mood === 'Happy') {
+                chords.push(getRandomMajChord(scale))
+            } else if(mood === 'Sad') {
+                chords.push(getRandomMinChord(scale))
+            }
+        }
+
+        return chords
+    }
 
     function getRandomKey(scale) {
         return parseInt(Math.random() * (scale.length - 1))
     }
 
-    function generateRandomMajScale(scale) {
+    function getRandomMajChord(scale) {
         let idx1 = getRandomKey(scale)
         let idx2 = idx1 + 2
-        let idx3 =idx2 + 2
+        let idx3 = idx2 + 2
 
         let key1 = scale[idx1]
         let key2 = scale[idx2]
@@ -51,6 +101,47 @@ $(document).ready(function() {
             } else if(idx3 <= scale.length) {
                 key3 = scale[scale.length - idx3]
             }
+        }
+
+        return [key1, key2, key3]
+    }
+
+    function getRandomMinChord(scale) {
+        let idx1 = getRandomKey(scale)
+        let idx2 = idx1 + 2
+        let idx3 = idx2 + 2
+
+        let key1 = scale[idx1]
+        idx2 = idx2 - 1
+        let key2 = scale[idx2]
+        let key3 = scale[idx3]
+
+        if(key1.split('').filter(char => key2.includes(char)).length !== 0) {
+            key2 = scale[idx2 + 1]
+        }
+
+        if(key2 === undefined) {
+            if(idx2 > scale.length) {
+                key2 = scale[idx2 - scale.length]
+            } else if(idx2 <= scale.length) {
+                key2 = scale[scale.length - idx2]
+            }
+        }
+
+        if(key3 === undefined) {
+            if(idx3 > scale.length) {
+                key3 = scale[idx3 - scale.length]
+            } else if(idx3 <= scale.length) {
+                key3 = scale[scale.length - idx3]
+            }
+        }
+
+        if(key2 === 'E') {
+            key2 = 'F'
+        } else if(key2 === 'B') {
+            key2 = 'C'
+        } else if(key2 && !(key2.includes('#'))) {
+            key2 = key2 + '#'
         }
 
         return [key1, key2, key3]

@@ -22,24 +22,26 @@
             <div class="control-wrapper">
                 <label for="selectMood">Choose a mood: </label>
                 <select id="selectMood">
-                    <option value="jazzy">Jazzy</option>
                     <option value="sad">Sad</option>
-                    <option value="meloncholic">Meloncholic</option>
                     <option value="happy">Happy</option>
-                    <option value="epic">Epic</option>
                 </select>
             </div>
             <div class="control-wrapper">
-                <label for="selectKey">What key?</label>
-                <select id="selectKey">
-                    <option value="">A</option>
-                    <option value="sad">B</option>
-                    <option value="meloncholic">C</option>
-                    <option value="happy">D</option>
-                    <option value="epic">E</option>
+                <label for="selectScale">What scale?</label>
+                <select id="selectScale">
+
                 </select>
             </div>
             <button id="btnChordGen" class="btn">Generate Progression</button>
+            
+            <div id="chordWrapper" class="chords-wrapper"></div>
+
+            <template id="chord-template">
+                <div class="chord" keys="">
+                    <p class="key"></p>
+                    <p class="type"></p>
+                </div>
+            </template>
         </section>
         <footer>
             <p>Created by <a href="http://chrisreading.net">Chris Reading</a></p>

@@ -102,3 +102,8 @@ footer {
     background-color: #2980b9;
     cursor: pointer;
 }
+
+.landing-header {
+    text-align: center;
+    font-weight: 900;
+}

@@ -14,7 +14,6 @@
                 <a href="./index.html">Home</a>
                 <a href="./generate.html" class="active">Generate</a>
                 <a href="./how-it-works.html">How it works</a>
-                <a href="./about.html">About</a>
             </nav>
         </div>
         <section>
@@ -22,20 +21,23 @@
             <div class="control-wrapper">
                 <label for="selectMood">Choose a mood: </label>
                 <select id="selectMood">
-                    <option value="sad">Sad</option>
                     <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
                 </select>
             </div>
             <div class="control-wrapper">
                 <label for="selectScale">What scale?</label>
                 <select id="selectScale">
-
+                    <!-- autofilled by array in generate.js -->
                 </select>
             </div>
             <button id="btnChordGen" class="btn">Generate Progression</button>
             
+            <!-- contains chord after they are generated -->
             <div id="chordWrapper" class="chords-wrapper"></div>
+            <p>Click a chord to play it!</p>
 
+            <!-- template for what a chord div -->
             <template id="chord-template">
                 <div class="chord" keys="">
                     <p class="key"></p>

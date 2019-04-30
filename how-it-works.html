@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>How It Works - ChordGen</title>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet"> 
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+    <body>
+        <div class="navbar">
+            <h3>ChordGen</h3>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./generate.html">Generate</a>
+                <a href="./how-it-works.html" class="active">How it works</a>
+            </nav>
+        </div>
+        <section>
+            <h1>How It Works</h1>
+            <h3>The Generator</h3>
+            <p>Through a series of arrays holding the notes for each scale avaliable on the piano, my generator is able to randomly generate chords based on a selected scale and mood.</p>
+            <p>Major chords are easier to generate, as you simply skip over every other note in a scale to get a major chord. Minor chords are different however, and the second note in the chord needs to be flattened, which my generator still needs work on.</p>
+            <h3>The Sound</h3>
+            <p>ChordGen was built using the <a href="https://github.com/keithwhor/audiosynth">audiosynth.js library by keithwhor.</a></p>
+            <p>Audiosynth provides a MIDI sound library for the browser and I was able to utilize this in playing generated chords.</p>
+        </section>
+        <section>
+            <h1>It's Purpose</h1>
+            <p>I created this website to help me learn more about music theory, especially in creating chords and chord progressions. </p>
+            <br>
+            <p>I use FL Studio to make music, and having a program that generates chords is very useful in the way FL lays out MIDI notes. For example: </p>
+            <img class="image" src="./img/flstudio.jpg">
+        </section>
+        <footer>
+            <p>Created by <a href="http://chrisreading.net">Chris Reading</a></p>
+            <p>Check out the code on <a href="http://github.com/nomad23541">github</a></p>
+        </footer>
+    </body>
+</html>
